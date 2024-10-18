@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青茶與春茶的分分看</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .drag-item {
+            padding: 8px;
+            margin: 5px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            cursor: grab;
+            display: inline-block;
+        }
+        .drag-item:hover {
+            background-color: #d0e6f6;
+        }
+        .drop-zone {
+            display: inline-block;
+            padding: 8px;
+            border-bottom: 2px solid #000;
+            min-width: 100px;
+        }
+        .result {
+            font-size: 20px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>青茶與春茶的分分看</h1>
+<p>將「春茶」或「青茶」拖曳到正確的括號中。</p>
+
+<h3>製作季節：</h3>
+<p><span class="drop-zone" id="drop1" ondrop="drop(event)" ondragover="allowDrop(event)"></span> 採摘於春季，茶葉新鮮，口感清爽。<span id="result1" class="result"></span></p>
+<p><span class="drop-zone" id="drop2" ondrop="drop(event)" ondragover="allowDrop(event)"></span> 不限定季節，強調部分發酵的製作工藝。<span id="result2" class="result"></span></p>
+
+<h3>發酵程度：</h3>
+<p><span class="drop-zone" id="drop3" ondrop="drop(event)" ondragover="allowDrop(event)"></span> 不發酵或輕度發酵，茶湯較淡，味道清新。<span id="result3" class="result"></span></p>
+<p><span class="drop-zone" id="drop4" ondrop="drop(event)" ondragover="allowDrop(event)"></span> 部分發酵，茶湯較深，口感濃郁且回甘。<span id="result4" class="result"></span></p>
+
+<h3>口感與香氣：</h3>
+<p><span class="drop-zone" id="drop5" ondrop="drop(event)" ondragover="allowDrop(event)"></span> 清爽、鮮甜，帶有淡淡花香。<span id="result5" class="result"></span></p>
+<p><span class="drop-zone" id="drop6" ondrop="drop(event)" ondragover="allowDrop(event)"></span> 醇厚，有濃郁的花香或果香。<span id="result6" class="result"></span></p>
+
+<h3>選項：</h3>
+<div id="options">
+    <div class="drag-item" id="spring-tea" draggable="true" ondragstart="drag(event)">春茶</div>
+    <div class="drag-item" id="oolong-tea" draggable="true" ondragstart="drag(event)">青茶</div>
+</div>
+
+<script>
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        var targetId = ev.target.id;
+        var correctAnswers = {
+            drop1: "spring-tea",
+            drop2: "oolong-tea",
+            drop3: "spring-tea",
+            drop4: "oolong-tea",
+            drop5: "spring-tea",
+            drop6: "oolong-tea"
+        };
+
+        var resultId = "result" + targetId[targetId.length - 1]; // Extract result ID based on drop zone ID
+        if (data === correctAnswers[targetId]) {
+            document.getElementById(resultId).innerHTML = "✔";
+            document.getElementById(resultId).style.color = "green";
+        } else {
+            document.getElementById(resultId).innerHTML = "✘";
+            document.getElementById(resultId).style.color = "red";
+        }
+        ev.target.innerHTML = document.getElementById(data).innerHTML;
+    }
+</script>
+
+</body>
+</html>
